@@ -1,65 +1,24 @@
-// Database updated with direct image URLs matching your design mockup perfectly
+// Catalog initialization loaded via permanent design fallback assets
 const PRODUCT_CATALOG_DATABASE = [
-    { 
-        id: 1, 
-        name: 'Cargo Pants Vintage', 
-        category: 'Celana', 
-        price: 120000, 
-        img: 'https://raw.githubusercontent.com/kdavina208-afk/wiltrif.github.io/main/images/cargo-pants.jpg', 
-        size: '32', 
-        color: 'Olive' 
-    },
-    { 
-        id: 2, 
-        name: 'Kaos Nike 90s Retro', 
-        category: 'Baju', 
-        price: 85000, 
-        img: 'https://raw.githubusercontent.com/kdavina208-afk/wiltrif.github.io/main/images/nike-tee.jpg', 
-        size: 'M', 
-        color: 'Hitam Tonasi' 
-    },
-    { 
-        id: 3, 
-        name: 'Kacamata Vintage Classic', 
-        category: 'Kacamata', 
-        price: 75000, 
-        img: 'https://raw.githubusercontent.com/kdavina208-afk/wiltrif.github.io/main/images/kacamata.jpg', 
-        size: 'All Size', 
-        color: 'Tortoise Brown' 
-    },
-    { 
-        id: 4, 
-        name: 'Converse All Star 70s', 
-        category: 'Sepatu', 
-        price: 200000, 
-        img: 'https://raw.githubusercontent.com/kdavina208-afk/wiltrif.github.io/main/images/converse.jpg', 
-        size: '42', 
-        color: 'Hitam' 
-    },
-    { 
-        id: 5, 
-        name: 'Jaket Denim Vintage', 
-        category: 'Jaket', 
-        price: 180000, 
-        img: 'https://raw.githubusercontent.com/kdavina208-afk/wiltrif.github.io/main/images/denim-jacket.jpg', 
-        size: 'L', 
-        color: 'Indigo Blue' 
-    },
-    { 
-        id: 6, 
-        name: 'Sweater Rajut Classic', 
-        category: 'Sweater', 
-        price: 95000, 
-        img: 'https://raw.githubusercontent.com/kdavina208-afk/wiltrif.github.io/main/images/sweater.jpg', 
-        size: 'XL', 
-        color: 'Navy Blue Mix' 
-    }
+    { id: 1, name: 'Cargo Pants Vintage', category: 'Celana', price: 120000, img: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=500&q=80', size: '32', color: 'Olive' },
+    { id: 2, name: 'Kaos Nike 90s Retro', category: 'Baju', price: 85000, img: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=500&q=80', size: 'M', color: 'Hitam Tonasi' },
+    { id: 3, name: 'Kacamata Vintage Classic', category: 'Kacamata', price: 75000, img: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=500&q=80', size: 'All Size', color: 'Tortoise Brown' },
+    { id: 4, name: 'Converse All Star 70s', category: 'Sepatu', price: 200000, img: 'https://images.unsplash.com/photo-1607522370275-f14206abe5d3?auto=format&fit=crop&w=500&q=80', size: '42', color: 'Hitam' },
+    { id: 5, name: 'Jaket Denim Vintage', category: 'Jaket', price: 180000, img: 'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?auto=format&fit=crop&w=500&q=80', size: 'L', color: 'Indigo Blue' },
+    { id: 6, name: 'Sweater Rajut Classic', category: 'Sweater', price: 95000, img: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=500&q=80', size: 'XL', color: 'Navy Blue' }
 ];
 
 let activeCartList = [];
 let calculationSubtotal = 0;
 let calculationTotalPayment = 0;
-let pickedPaymentGateway = "Transfer Bank";
+
+// Dynamic Courier States
+let selectedCourierRate = 15000;
+let selectedCourierName = "JNE Express (REG)";
+let selectedCourierETA = "2 - 3 Hari Pengiriman";
+
+// Default Payment set to COD as requested
+let pickedPaymentGateway = "Cash On Delivery (COD)";
 
 document.addEventListener("DOMContentLoaded", () => {
     renderCatalogCollection(PRODUCT_CATALOG_DATABASE, 'home-products-catalog');
@@ -70,10 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function showSection(sectionId) {
     document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
     const targetedNode = document.getElementById(sectionId);
-    if(targetedNode) {
-        targetedNode.classList.add('active');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    if(targetedNode) targetedNode.classList.add('active');
 }
 
 function renderCatalogCollection(itemsList, DOMTargetNodeID) {
@@ -84,7 +40,7 @@ function renderCatalogCollection(itemsList, DOMTargetNodeID) {
     itemsList.forEach(product => {
         renderingContextNode.innerHTML += `
             <div class="product-card">
-                <img src="${product.img}" alt="${product.name}" onerror="this.src='https://placehold.co/300x300?text=Image+Missing'">
+                <img src="${product.img}" alt="${product.name}">
                 <h4>${product.name}</h4>
                 <p>Rp ${product.price.toLocaleString('id-ID')}</p>
                 <button class="btn-add-cart" onclick="pushItemToCartSystem(${product.id})">Tambah ke Keranjang</button>
@@ -136,16 +92,14 @@ function changeRowQuantity(productId, alterationValue) {
 
 function updateGlobalCartInterface() {
     const totalCountSum = activeCartList.reduce((acc, obj) => acc + obj.quantity, 0);
-    const countBadge = document.getElementById('cart-count');
-    if (countBadge) countBadge.textContent = totalCountSum;
+    document.getElementById('cart-count').textContent = totalCountSum;
 
     const listContainerNode = document.getElementById('cart-items-list');
     if(!listContainerNode) return;
 
     if(activeCartList.length === 0) {
-        listContainerNode.innerHTML = `<div class="card-layout-flat text-center"><p>Keranjang belanja kamu masih kosong.</p></div>`;
+        listContainerNode.innerHTML = `<div class="card-layout-flat text-center" style="padding: 20px;"><p>Keranjang belanja kamu masih kosong.</p></div>`;
         document.getElementById('summary-subtotal').textContent = 'Rp 0';
-        document.getElementById('summary-total').textContent = 'Rp 0';
         document.getElementById('cart-summary-qty').textContent = '0';
         return;
     }
@@ -157,10 +111,9 @@ function updateGlobalCartInterface() {
         calculationSubtotal += (row.price * row.quantity);
         listContainerNode.innerHTML += `
             <div class="cart-row-item">
-                <img src="${row.img}" onerror="this.src='https://placehold.co/100x100?text=No+Image'">
+                <img src="${row.img}" style="width:60px; height:60px; object-fit:cover; border-radius:4px;">
                 <div class="cart-item-info">
                     <h4>${row.name}</h4>
-                    <p>Ukuran: ${row.size} | Warna: ${row.color}</p>
                     <strong>Rp ${row.price.toLocaleString('id-ID')}</strong>
                 </div>
                 <div class="qty-pill-box">
@@ -168,105 +121,92 @@ function updateGlobalCartInterface() {
                     <span>${row.quantity}</span>
                     <button onclick="changeRowQuantity(${row.id}, 1)">+</button>
                 </div>
-                <button class="btn-remove-row" onclick="changeRowQuantity(${row.id}, -${row.quantity})"><i class="fas fa-trash-alt"></i></button>
             </div>
         `;
     });
-
-    const standardFlatShippingFee = 15000;
-    calculationTotalPayment = calculationSubtotal + standardFlatShippingFee;
 
     document.getElementById('cart-summary-qty').textContent = totalCountSum;
     document.getElementById('summary-subtotal').textContent = `Rp ${calculationSubtotal.toLocaleString('id-ID')}`;
-    document.getElementById('summary-total').textContent = `Rp ${calculationTotalPayment.toLocaleString('id-ID')}`;
 }
 
-function selectPaymentRadio(htmlLabelElement) {
-    document.querySelectorAll('.method-option').forEach(element => element.classList.remove('checked'));
-    htmlLabelElement.classList.add('checked');
+function goToShippingStep() {
+    if(activeCartList.length === 0) {
+        alert("Keranjang belanja kosong!");
+        return;
+    }
+    showSection('shipping-step');
+}
+
+// Handles Real-Time Delivery Estimates dynamically
+function selectShippingCourier(courierName, shippingCost, estimatedDays) {
+    selectedCourierName = courierName;
+    selectedCourierRate = shippingCost;
+    selectedCourierETA = `${estimatedDays} Hari Pengiriman`;
+
+    document.querySelectorAll('.shipping-options-group .method-option').forEach(el => el.classList.remove('checked'));
     
-    const contextRadioInputElement = htmlLabelElement.querySelector('input[type="radio"]');
-    contextRadioInputElement.checked = true;
-    pickedPaymentGateway = contextRadioInputElement.value;
+    if(courierName.includes('JNE')) document.getElementById('courier-jne').classList.add('checked');
+    if(courierName.includes('J&T')) document.getElementById('courier-jnt').classList.add('checked');
+    if(courierName.includes('SiCepat')) document.getElementById('courier-sicepat').classList.add('checked');
+    if(courierName.includes('Pos')) document.getElementById('courier-pos').classList.add('checked');
+
+    document.getElementById('ship-step-courier').textContent = courierName;
+    document.getElementById('ship-step-ongkir').textContent = `Rp ${shippingCost.toLocaleString('id-ID')}`;
 }
 
 function goToPaymentStep() {
-    if(activeCartList.length === 0) {
-        alert("Tambahkan item baju terlebih dahulu sebelum beralih ke menu pembayaran!");
-        return;
-    }
+    calculationTotalPayment = calculationSubtotal + selectedCourierRate;
     
-    document.querySelector('.pay-item-count').textContent = activeCartList.reduce((acc, obj) => acc + obj.quantity, 0);
     document.getElementById('pay-subtotal').textContent = `Rp ${calculationSubtotal.toLocaleString('id-ID')}`;
+    document.getElementById('pay-ongkir').textContent = `Rp ${selectedCourierRate.toLocaleString('id-ID')}`;
     document.getElementById('pay-total').textContent = `Rp ${calculationTotalPayment.toLocaleString('id-ID')}`;
     
     showSection('payment');
-    initializeCheckoutCountdownTimer(23, 59);
 }
 
-function initializeCheckoutCountdownTimer(mins, secs) {
-    const UIAnchorDisplayNode = document.getElementById('countdown-timer');
-    let convertedTotalSecondsLeft = (mins * 60) + secs;
-
-    if (window.activeStoreIntervalLoop) clearInterval(window.activeStoreIntervalLoop);
-
-    window.activeStoreIntervalLoop = setInterval(() => {
-        let printMins = Math.floor(convertedTotalSecondsLeft / 60);
-        let printSecs = convertedTotalSecondsLeft % 60;
-
-        printMins = printMins < 10 ? "0" + printMins : printMins;
-        printSecs = printSecs < 10 ? "0" + printSecs : printSecs;
-
-        if(UIAnchorDisplayNode) UIAnchorDisplayNode.textContent = `${printMins} : ${printSecs}`;
-
-        if (--convertedTotalSecondsLeft < 0) {
-            clearInterval(window.activeStoreIntervalLoop);
-            alert("Batas durasi penyelesaian invoice berakhir.");
-            showSection('cart');
-        }
-    }, 1000);
+function selectPaymentRadio(htmlLabelElement, methodLabelString) {
+    document.querySelectorAll('.payment-group .method-option').forEach(element => element.classList.remove('checked'));
+    htmlLabelElement.classList.add('checked');
+    
+    const radioInput = htmlLabelElement.querySelector('input[type="radio"]');
+    if(radioInput) radioInput.checked = true;
+    
+    pickedPaymentGateway = methodLabelString;
 }
 
-function simulatePaymentOutcome(isSuccessfulTransaction) {
-    if (window.activeStoreIntervalLoop) clearInterval(window.activeStoreIntervalLoop);
-
-    if(isSuccessfulTransaction) {
+function simulatePaymentOutcome(isSuccess) {
+    if(isSuccess) {
         document.getElementById('success-method').textContent = pickedPaymentGateway;
         document.getElementById('success-total').textContent = `Rp ${calculationTotalPayment.toLocaleString('id-ID')}`;
         showSection('payment-success');
-    } else {
-        showSection('payment-failed');
     }
 }
 
-// Opens the exact tracking page dashboard from your mockups
 function openTrackingDashboard() {
-    const listInjectionTargetNode = document.getElementById('tracking-items-container');
-    if(!listInjectionTargetNode) return;
+    const trackingContainer = document.getElementById('tracking-items-container');
+    if(!trackingContainer) return;
 
-    listInjectionTargetNode.innerHTML = '';
-    let piecesCounter = 0;
-
-    activeCartList.forEach(element => {
-        piecesCounter += element.quantity;
-        listInjectionTargetNode.innerHTML += `
-            <div class="cart-row-item" style="border:none; padding:8px 0;">
-                <img src="${element.img}" style="width:50px; height:50px; border-radius:6px;" onerror="this.src='https://placehold.co/50x50?text=Item'">
-                <div class="cart-item-info">
-                    <h4 style="font-size:13px;">${element.name}</h4>
-                    <p style="font-size:11px;">Ukuran: ${element.size} | Warna: ${element.color} | Qty: ${element.quantity}</p>
-                </div>
-                <strong style="font-size:13px;">Rp ${(element.price * element.quantity).toLocaleString('id-ID')}</strong>
+    trackingContainer.innerHTML = '';
+    activeCartList.forEach(item => {
+        trackingContainer.innerHTML += `
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:14px;">
+                <span>${item.name} <strong>(x${item.quantity})</strong></span>
+                <span>Rp ${(item.price * item.quantity).toLocaleString('id-ID')}</span>
             </div>
         `;
     });
 
-    const markdownDiscountCalculated = 10000;
-    const computedInvoiceReceiptTotal = calculationTotalPayment - markdownDiscountCalculated;
-
-    document.getElementById('track-qty-lbl').textContent = piecesCounter;
-    document.getElementById('track-subtotal').textContent = `Rp ${calculationSubtotal.toLocaleString('id-ID')}`;
-    document.getElementById('track-total').textContent = `Rp ${computedInvoiceReceiptTotal.toLocaleString('id-ID')}`;
+    document.getElementById('track-total').textContent = `Rp ${calculationTotalPayment.toLocaleString('id-ID')}`;
+    document.getElementById('track-courier-name').textContent = selectedCourierName;
+    document.getElementById('track-eta-days').textContent = selectedCourierETA;
+    
+    // Updates instructions for COD vs online processing
+    const descNode = document.getElementById('track-eta-desc');
+    if(pickedPaymentGateway.includes('COD')) {
+        descNode.textContent = "Silakan siapkan uang pas tunai untuk diserahkan ke kurir saat barang tiba.";
+    } else {
+        descNode.textContent = "Pembayaran lunas. Paket Anda langsung diserahkan ke kurir.";
+    }
 
     showSection('tracking-panel');
 }
