@@ -1,253 +1,227 @@
-// Expanded 12-Item Database with Accurate Images
-const PRODUCTS_DATA = [
-    { id: 1, name: 'Jaket Denim Vintage', category: 'Jaket', price: 180000, img: 'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?q=80&w=500', size: 'L', color: 'Denim' },
-    { id: 2, name: 'Converse All Star 70s', category: 'Sepatu', price: 200000, img: 'https://images.unsplash.com/photo-1607522370275-f14206abe5d3?q=80&w=500', size: '42', color: 'Hitam' },
-    { id: 3, name: 'Sweater Rajut Classic', category: 'Sweater', price: 95000, img: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=80&w=500', size: 'XL', color: 'Navy' },
-    { id: 4, name: 'Cargo Pants Vintage', category: 'Celana', price: 120000, img: 'https://images.unsplash.com/photo-1517423568366-8b83523034fd?q=80&w=500', size: '32', color: 'Olive' },
-    { id: 5, name: 'Kaos Nike 90s Retro', category: 'Baju', price: 85000, img: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=500', size: 'M', color: 'Hitam' },
-    { id: 6, name: 'Kacamata Vintage Oval', category: 'Kacamata', price: 75000, img: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=500', size: 'All Size', color: 'Leopard' },
-    { id: 7, name: 'Jaket Varsity Corduroy', category: 'Jaket', price: 210000, img: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=500', size: 'XL', color: 'Hijau Tua' },
-    { id: 8, name: 'Docmart Leather Boots 1460', category: 'Sepatu', price: 350000, img: 'https://images.unsplash.com/photo-1608256246200-53e635b5b65f?q=80&w=500', size: '41', color: 'Maroon' },
-    { id: 9, name: 'Sweater Oversize Crewneck', category: 'Sweater', price: 110000, img: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=500', size: 'L', color: 'Abu-Abu' },
-    { id: 10, name: 'Celana Levi 501 Vintage', category: 'Celana', price: 195000, img: 'https://images.unsplash.com/photo-1542272604-787c3835535d?q=80&w=500', size: '30', color: 'Light Blue' },
-    { id: 11, name: 'Flannel Shirt Retro', category: 'Baju', price: 90000, img: 'https://images.unsplash.com/photo-1598033129183-c4f50c736f10?q=80&w=500', size: 'L', color: 'Merah Hitam' },
-    { id: 12, name: 'Kacamata Retro Steampunk', category: 'Kacamata', price: 80000, img: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?q=80&w=500', size: 'All Size', color: 'Emas' }
+// Database curated with exact filenames from your storefront design mockup assets
+const PRODUCT_CATALOG_DATABASE = [
+    { id: 1, name: 'Cargo Pants Vintage', category: 'Celana', price: 120000, img: 'images/cargo-pants.jpg', size: '32', color: 'Olive' },
+    { id: 2, name: 'Kaos Nike 90s Retro', category: 'Baju', price: 85000, img: 'images/nike-tee.jpg', size: 'M', color: 'Hitam Tonasi' },
+    { id: 3, name: 'Kacamata Vintage Classic', category: 'Kacamata', price: 75000, img: 'images/kacamata.jpg', size: 'All Size', color: 'Tortoise Brown' },
+    { id: 4, name: 'Converse All Star 70s', category: 'Sepatu', price: 200000, img: 'images/converse.jpg', size: '42', color: 'Hitam' },
+    { id: 5, name: 'Jaket Denim Vintage', category: 'Jaket', price: 180000, img: 'images/denim-jacket.jpg', size: 'L', color: 'Indigo Blue' },
+    { id: 6, name: 'Sweater Rajut Classic', category: 'Sweater', price: 95000, img: 'images/sweater.jpg', size: 'XL', color: 'Navy Blue Mix' }
 ];
 
-let cart = [];
-let checkoutSubtotal = 0;
-let checkoutTotal = 0;
-let selectedPaymentMethod = "QRIS";
+let activeCartList = [];
+let calculationSubtotal = 0;
+let calculationTotalPayment = 0;
+let pickedPaymentGateway = "Transfer Bank";
 
-// System Initialization
 document.addEventListener("DOMContentLoaded", () => {
-    renderCatalogItems(PRODUCTS_DATA);
-    updateCartUI();
+    // Render storefront elements
+    renderCatalogCollection(PRODUCT_CATALOG_DATABASE, 'home-products-catalog');
+    renderCatalogCollection(PRODUCT_CATALOG_DATABASE, 'main-shop-catalog');
+    updateGlobalCartInterface();
 });
 
-// Main Section Routing Management
 function showSection(sectionId) {
-    document.querySelectorAll('.page-section').forEach(section => {
-        section.classList.remove('active');
-    });
-    const targetSection = document.getElementById(sectionId);
-    if(targetSection) {
-        targetSection.classList.add('active');
+    document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+    const targetedNode = document.getElementById(sectionId);
+    if(targetedNode) {
+        targetedNode.classList.add('active');
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    // Automatically close the mobile navigation menu drawer
-    document.getElementById('navMenu').classList.remove('mobile-open');
 }
 
 function toggleMobileMenu() {
     document.getElementById('navMenu').classList.toggle('mobile-open');
 }
 
-// Render Grid Catalog
-function renderCatalogItems(products) {
-    const catalogContainer = document.getElementById('products-catalog-container');
-    if(!catalogContainer) return;
+function renderCatalogCollection(itemsList, DOMTargetNodeID) {
+    const renderingContextNode = document.getElementById(DOMTargetNodeID);
+    if(!renderingContextNode) return;
 
-    catalogContainer.innerHTML = '';
-    products.forEach(item => {
-        catalogContainer.innerHTML += `
-            <div class="product-item-card animate-fade-in">
-                <img src="${item.img}" alt="${item.name}" loading="lazy">
-                <div class="product-info">
-                    <h4>${item.name}</h4>
-                    <p class="product-price">Rp ${item.price.toLocaleString('id-ID')}</p>
-                    <button class="btn-add-item" onclick="addItemToCart(${item.id})"><i class="fas fa-shopping-basket"></i> Tambah</button>
-                </div>
+    renderingContextNode.innerHTML = '';
+    itemsList.forEach(product => {
+        renderingContextNode.innerHTML += `
+            <div class="product-card">
+                <img src="${product.img}" alt="${product.name}">
+                <h4>${product.name}</h4>
+                <p>Rp ${product.price.toLocaleString('id-ID')}</p>
+                <button class="btn-add-cart" onclick="pushItemToCartSystem(${product.id})">Tambah ke Keranjang</button>
             </div>
         `;
     });
 }
 
-// Category Query Filtering System
-function filterCategory(category) {
+function filterCategory(categoryTag) {
     showSection('shop');
-    
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        if(btn.textContent.toLowerCase() === category.toLowerCase() || (category === 'All' && btn.textContent === 'Semua')) {
-            btn.classList.add('active');
+    document.querySelectorAll('.filter-btn').forEach(button => {
+        if(button.textContent.toLowerCase() === categoryTag.toLowerCase() || (categoryTag === 'All' && button.textContent === 'Semua')) {
+            button.classList.add('active');
         } else {
-            btn.classList.remove('active');
+            button.classList.remove('active');
         }
     });
 
-    if(category === 'All') {
-        renderCatalogItems(PRODUCTS_DATA);
+    if(categoryTag === 'All') {
+        renderCatalogCollection(PRODUCT_CATALOG_DATABASE, 'main-shop-catalog');
     } else {
-        const filtered = PRODUCTS_DATA.filter(p => p.category.toLowerCase() === category.toLowerCase());
-        renderCatalogItems(filtered);
+        const filteredArray = PRODUCT_CATALOG_DATABASE.filter(item => item.category.toLowerCase() === categoryTag.toLowerCase());
+        renderCatalogCollection(filteredArray, 'main-shop-catalog');
     }
 }
 
-// Cart Management Systems
-function addItemToCart(id) {
-    const product = PRODUCTS_DATA.find(p => p.id === id);
-    const existingCartItem = cart.find(item => item.id === id);
+function pushItemToCartSystem(productId) {
+    const discoveredProduct = PRODUCT_CATALOG_DATABASE.find(p => p.id === productId);
+    const itemInCartAlready = activeCartList.find(item => item.id === productId);
 
-    if(existingCartItem) {
-        existingCartItem.qty++;
+    if(itemInCartAlready) {
+        itemInCartAlready.quantity++;
     } else {
-        cart.push({ ...product, qty: 1 });
+        activeCartList.push({ ...discoveredProduct, quantity: 1 });
     }
-    updateCartUI();
+    updateGlobalCartInterface();
 }
 
-function adjustCartQty(id, modifier) {
-    const targetItem = cart.find(item => item.id === id);
-    if(targetItem) {
-        targetItem.qty += modifier;
-        if(targetItem.qty <= 0) {
-            cart = cart.filter(item => item.id !== id);
+function changeRowQuantity(productId, alterationValue) {
+    const designatedCartItem = activeCartList.find(item => item.id === productId);
+    if(designatedCartItem) {
+        designatedCartItem.quantity += alterationValue;
+        if(designatedCartItem.quantity <= 0) {
+            activeCartList = activeCartList.filter(item => item.id !== productId);
         }
-        updateCartUI();
+        updateGlobalCartInterface();
     }
 }
 
-function updateCartUI() {
-    const totalQty = cart.reduce((sum, current) => sum + current.qty, 0);
-    document.getElementById('cart-count').textContent = totalQty;
+function updateGlobalCartInterface() {
+    const totalCountSum = activeCartList.reduce((acc, obj) => acc + obj.quantity, 0);
+    document.getElementById('cart-count').textContent = totalCountSum;
 
-    const listNode = document.getElementById('cart-items-list');
-    if(!listNode) return;
+    const listContainerNode = document.getElementById('cart-items-list');
+    if(!listContainerNode) return;
 
-    if(cart.length === 0) {
-        listNode.innerHTML = `
-            <div class="card" style="text-align:center; padding: 40px 20px;">
-                <i class="fas fa-shopping-bag" style="font-size: 48px; color: #ccc; margin-bottom: 15px;"></i>
-                <p style="font-weight: 600; color: #888;">Keranjang belanja Anda kosong.</p>
-            </div>`;
+    if(activeCartList.length === 0) {
+        listContainerNode.innerHTML = `<div class="card-layout-flat text-center"><p>Keranjang belanja kamu masih kosong.</p></div>`;
         document.getElementById('summary-subtotal').textContent = 'Rp 0';
         document.getElementById('summary-total').textContent = 'Rp 0';
+        document.getElementById('cart-summary-qty').textContent = '0';
         return;
     }
 
-    listNode.innerHTML = '';
-    checkoutSubtotal = 0;
+    listContainerNode.innerHTML = '';
+    calculationSubtotal = 0;
 
-    cart.forEach(item => {
-        const rowCost = item.price * item.qty;
-        checkoutSubtotal += rowCost;
-        listNode.innerHTML += `
-            <div class="cart-item-row">
-                <img src="${item.img}">
-                <div class="item-meta">
-                    <h4>${item.name}</h4>
-                    <p>Ukuran: ${item.size} | Warna: ${item.color}</p>
-                    <strong>Rp ${item.price.toLocaleString('id-ID')}</strong>
+    activeCartList.forEach(row => {
+        calculationSubtotal += (row.price * row.quantity);
+        listContainerNode.innerHTML += `
+            <div class="cart-row-item">
+                <img src="${row.img}">
+                <div class="cart-item-info">
+                    <h4>${row.name}</h4>
+                    <p>Ukuran: ${row.size} | Warna: ${row.color}</p>
+                    <strong>Rp ${row.price.toLocaleString('id-ID')}</strong>
                 </div>
-                <div class="qty-controls">
-                    <button onclick="adjustCartQty(${item.id}, -1)">-</button>
-                    <span>${item.qty}</span>
-                    <button onclick="adjustCartQty(${item.id}, 1)">+</button>
+                <div class="qty-pill-box">
+                    <button onclick="changeRowQuantity(${row.id}, -1)">-</button>
+                    <span>${row.quantity}</span>
+                    <button onclick="changeRowQuantity(${row.id}, 1)">+</button>
                 </div>
+                <button class="btn-remove-row" onclick="changeRowQuantity(${row.id}, -${row.quantity})"><i class="fas fa-trash-alt"></i></button>
             </div>
         `;
     });
 
-    const shippingFee = 15000;
-    checkoutTotal = checkoutSubtotal + shippingFee;
+    const standardFlatShippingFee = 15000;
+    calculationTotalPayment = calculationSubtotal + standardFlatShippingFee;
 
-    document.getElementById('summary-subtotal').textContent = `Rp ${checkoutSubtotal.toLocaleString('id-ID')}`;
-    document.getElementById('summary-total').textContent = `Rp ${checkoutTotal.toLocaleString('id-ID')}`;
+    document.getElementById('cart-summary-qty').textContent = totalCountSum;
+    document.getElementById('summary-subtotal').textContent = `Rp ${calculationSubtotal.toLocaleString('id-ID')}`;
+    document.getElementById('summary-total').textContent = `Rp ${calculationTotalPayment.toLocaleString('id-ID')}`;
 }
 
-// Payment Selection Styling Handler
-function selectPaymentRadio(element) {
-    document.querySelectorAll('.method-option').forEach(opt => opt.classList.remove('checked'));
-    element.classList.add('checked');
+function selectPaymentRadio(htmlLabelElement) {
+    document.querySelectorAll('.method-option').forEach(element => element.classList.remove('checked'));
+    htmlLabelElement.classList.add('checked');
     
-    const radioInput = element.querySelector('input[type="radio"]');
-    radioInput.checked = true;
-    selectedPaymentMethod = radioInput.value;
+    const contextRadioInputElement = htmlLabelElement.querySelector('input[type="radio"]');
+    contextRadioInputElement.checked = true;
+    pickedPaymentGateway = contextRadioInputElement.value;
 }
 
-// Proceed to Checkout Step
 function goToPaymentStep() {
-    if(cart.length === 0) {
-        alert("Keranjang Anda masih kosong!");
+    if(activeCartList.length === 0) {
+        alert("Tambahkan item baju terlebih dahulu sebelum beralih ke menu pembayaran!");
         return;
     }
     
-    document.getElementById('pay-subtotal').textContent = `Rp ${checkoutSubtotal.toLocaleString('id-ID')}`;
-    document.getElementById('pay-total').textContent = `Rp ${checkoutTotal.toLocaleString('id-ID')}`;
+    document.querySelector('.pay-item-count').textContent = activeCartList.reduce((acc, obj) => acc + obj.quantity, 0);
+    document.getElementById('pay-subtotal').textContent = `Rp ${calculationSubtotal.toLocaleString('id-ID')}`;
+    document.getElementById('pay-total').textContent = `Rp ${calculationTotalPayment.toLocaleString('id-ID')}`;
     
     showSection('payment');
-    launchCountdownTimer(23, 59);
+    initializeCheckoutCountdownTimer(23, 59);
 }
 
-// Dynamic Expiry Checkout Timer Countdown
-function launchCountdownTimer(minutes, seconds) {
-    const timerDisplay = document.getElementById('countdown-timer');
-    let totalSeconds = (minutes * 60) + seconds;
+function initializeCheckoutCountdownTimer(mins, secs) {
+    const UIAnchorDisplayNode = document.getElementById('countdown-timer');
+    let convertedTotalSecondsLeft = (mins * 60) + secs;
 
-    // Clear previous running countdown loops
-    if (window.activeCheckoutInterval) clearInterval(window.activeCheckoutInterval);
+    if (window.activeStoreIntervalLoop) clearInterval(window.activeStoreIntervalLoop);
 
-    window.activeCheckoutInterval = setInterval(() => {
-        let currentMinutes = Math.floor(totalSeconds / 60);
-        let currentSeconds = totalSeconds % 60;
+    window.activeStoreIntervalLoop = setInterval(() => {
+        let printMins = Math.floor(convertedTotalSecondsLeft / 60);
+        let printSecs = convertedTotalSecondsLeft % 60;
 
-        currentMinutes = currentMinutes < 10 ? "0" + currentMinutes : currentMinutes;
-        currentSeconds = currentSeconds < 10 ? "0" + currentSeconds : currentSeconds;
+        printMins = printMins < 10 ? "0" + printMins : printMins;
+        printSecs = printSecs < 10 ? "0" + printSecs : printSecs;
 
-        timerDisplay.textContent = `${currentMinutes}:${currentSeconds}`;
+        UIAnchorDisplayNode.textContent = `${printMins} : ${printSecs}`;
 
-        if (--totalSeconds < 0) {
-            clearInterval(window.activeCheckoutInterval);
-            timerDisplay.textContent = "00:00";
-            alert("Sesi transaksi Anda telah kedaluwarsa. Silakan ulangi checkout.");
+        if (--convertedTotalSecondsLeft < 0) {
+            clearInterval(window.activeStoreIntervalLoop);
+            alert("Batas durasi penyelesaian invoice berakhir.");
             showSection('cart');
         }
     }, 1000);
 }
 
-// Gateway Transaction Simulator Route Switcher
-function simulatePaymentOutcome(successState) {
-    if (window.activeCheckoutInterval) clearInterval(window.activeCheckoutInterval);
+function simulatePaymentOutcome(isSuccessfulTransaction) {
+    if (window.activeStoreIntervalLoop) clearInterval(window.activeStoreIntervalLoop);
 
-    if(successState) {
-        document.getElementById('success-payment-method').textContent = selectedPaymentMethod;
-        document.getElementById('success-total').textContent = `Rp ${checkoutTotal.toLocaleString('id-ID')}`;
+    if(isSuccessfulTransaction) {
+        document.getElementById('success-method').textContent = pickedPaymentGateway;
+        document.getElementById('success-total').textContent = `Rp ${calculationTotalPayment.toLocaleString('id-ID')}`;
         showSection('payment-success');
     } else {
         showSection('payment-failed');
     }
 }
 
-// Order Tracking Management System
 function openTrackingDashboard() {
-    const container = document.getElementById('tracking-items-container');
-    container.innerHTML = '';
+    const listInjectionTargetNode = document.getElementById('tracking-items-container');
+    if(!listInjectionTargetNode) return;
 
-    cart.forEach(item => {
-        container.innerHTML += `
-            <div class="cart-item-row" style="border:none; padding:10px 0; margin:0; border-bottom:1px solid #eee;">
-                <img src="${item.img}" style="width:60px; height:60px;">
-                <div class="item-meta">
-                    <h4 style="font-size:14px;">${item.name}</h4>
-                    <p style="font-size:12px;">Ukuran: ${item.size} | Warna: ${item.color}</p>
-                    <small class="text-muted">Jumlah: ${item.qty}x</small>
+    listInjectionTargetNode.innerHTML = '';
+    let piecesCounter = 0;
+
+    activeCartList.forEach(element => {
+        piecesCounter += element.quantity;
+        listInjectionTargetNode.innerHTML += `
+            <div class="cart-row-item" style="border:none; padding:8px 0;">
+                <img src="${element.img}" style="width:50px; height:50px; border-radius:6px;">
+                <div class="cart-item-info">
+                    <h4 style="font-size:13px;">${element.name}</h4>
+                    <p style="font-size:11px;">Ukuran: ${element.size} | Warna: ${element.color} | Qty: ${element.quantity}</p>
                 </div>
-                <div style="text-align:right; font-weight:700; font-size:14px;">
-                    Rp ${(item.price * item.qty).toLocaleString('id-ID')}
-                </div>
+                <strong style="font-size:13px;">Rp ${(element.price * element.quantity).toLocaleString('id-ID')}</strong>
             </div>
         `;
     });
 
-    const discountAmount = 10000; 
-    const operationalFinalTotal = checkoutTotal - discountAmount;
+    const markdownDiscountCalculated = 10000;
+    const computedInvoiceReceiptTotal = calculationTotalPayment - markdownDiscountCalculated;
 
-    document.getElementById('track-subtotal').textContent = `Rp ${checkoutSubtotal.toLocaleString('id-ID')}`;
-    document.getElementById('track-total').textContent = `Rp ${operationalFinalTotal.toLocaleString('id-ID')}`;
+    document.getElementById('track-qty-lbl').textContent = piecesCounter;
+    document.getElementById('track-subtotal').textContent = `Rp ${calculationSubtotal.toLocaleString('id-ID')}`;
+    document.getElementById('track-total').textContent = `Rp ${computedInvoiceReceiptTotal.toLocaleString('id-ID')}`;
 
     showSection('tracking-panel');
-
-    // Flush active state cart contents upon generating delivery invoice sheet
-    cart = [];
-    updateCartUI();
 }
