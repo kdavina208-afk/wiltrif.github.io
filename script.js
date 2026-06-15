@@ -1,11 +1,59 @@
-// Database curated with exact filenames from your storefront design mockup assets
+// Database updated with direct image URLs matching your design mockup perfectly
 const PRODUCT_CATALOG_DATABASE = [
-    { id: 1, name: 'Cargo Pants Vintage', category: 'Celana', price: 120000, img: 'images/cargo-pants.jpg', size: '32', color: 'Olive' },
-    { id: 2, name: 'Kaos Nike 90s Retro', category: 'Baju', price: 85000, img: 'images/nike-tee.jpg', size: 'M', color: 'Hitam Tonasi' },
-    { id: 3, name: 'Kacamata Vintage Classic', category: 'Kacamata', price: 75000, img: 'images/kacamata.jpg', size: 'All Size', color: 'Tortoise Brown' },
-    { id: 4, name: 'Converse All Star 70s', category: 'Sepatu', price: 200000, img: 'images/converse.jpg', size: '42', color: 'Hitam' },
-    { id: 5, name: 'Jaket Denim Vintage', category: 'Jaket', price: 180000, img: 'images/denim-jacket.jpg', size: 'L', color: 'Indigo Blue' },
-    { id: 6, name: 'Sweater Rajut Classic', category: 'Sweater', price: 95000, img: 'images/sweater.jpg', size: 'XL', color: 'Navy Blue Mix' }
+    { 
+        id: 1, 
+        name: 'Cargo Pants Vintage', 
+        category: 'Celana', 
+        price: 120000, 
+        img: 'https://raw.githubusercontent.com/kdavina208-afk/wiltrif.github.io/main/images/cargo-pants.jpg', 
+        size: '32', 
+        color: 'Olive' 
+    },
+    { 
+        id: 2, 
+        name: 'Kaos Nike 90s Retro', 
+        category: 'Baju', 
+        price: 85000, 
+        img: 'https://raw.githubusercontent.com/kdavina208-afk/wiltrif.github.io/main/images/nike-tee.jpg', 
+        size: 'M', 
+        color: 'Hitam Tonasi' 
+    },
+    { 
+        id: 3, 
+        name: 'Kacamata Vintage Classic', 
+        category: 'Kacamata', 
+        price: 75000, 
+        img: 'https://raw.githubusercontent.com/kdavina208-afk/wiltrif.github.io/main/images/kacamata.jpg', 
+        size: 'All Size', 
+        color: 'Tortoise Brown' 
+    },
+    { 
+        id: 4, 
+        name: 'Converse All Star 70s', 
+        category: 'Sepatu', 
+        price: 200000, 
+        img: 'https://raw.githubusercontent.com/kdavina208-afk/wiltrif.github.io/main/images/converse.jpg', 
+        size: '42', 
+        color: 'Hitam' 
+    },
+    { 
+        id: 5, 
+        name: 'Jaket Denim Vintage', 
+        category: 'Jaket', 
+        price: 180000, 
+        img: 'https://raw.githubusercontent.com/kdavina208-afk/wiltrif.github.io/main/images/denim-jacket.jpg', 
+        size: 'L', 
+        color: 'Indigo Blue' 
+    },
+    { 
+        id: 6, 
+        name: 'Sweater Rajut Classic', 
+        category: 'Sweater', 
+        price: 95000, 
+        img: 'https://raw.githubusercontent.com/kdavina208-afk/wiltrif.github.io/main/images/sweater.jpg', 
+        size: 'XL', 
+        color: 'Navy Blue Mix' 
+    }
 ];
 
 let activeCartList = [];
@@ -14,7 +62,6 @@ let calculationTotalPayment = 0;
 let pickedPaymentGateway = "Transfer Bank";
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Render storefront elements
     renderCatalogCollection(PRODUCT_CATALOG_DATABASE, 'home-products-catalog');
     renderCatalogCollection(PRODUCT_CATALOG_DATABASE, 'main-shop-catalog');
     updateGlobalCartInterface();
@@ -29,10 +76,6 @@ function showSection(sectionId) {
     }
 }
 
-function toggleMobileMenu() {
-    document.getElementById('navMenu').classList.toggle('mobile-open');
-}
-
 function renderCatalogCollection(itemsList, DOMTargetNodeID) {
     const renderingContextNode = document.getElementById(DOMTargetNodeID);
     if(!renderingContextNode) return;
@@ -41,7 +84,7 @@ function renderCatalogCollection(itemsList, DOMTargetNodeID) {
     itemsList.forEach(product => {
         renderingContextNode.innerHTML += `
             <div class="product-card">
-                <img src="${product.img}" alt="${product.name}">
+                <img src="${product.img}" alt="${product.name}" onerror="this.src='https://placehold.co/300x300?text=Image+Missing'">
                 <h4>${product.name}</h4>
                 <p>Rp ${product.price.toLocaleString('id-ID')}</p>
                 <button class="btn-add-cart" onclick="pushItemToCartSystem(${product.id})">Tambah ke Keranjang</button>
@@ -93,7 +136,8 @@ function changeRowQuantity(productId, alterationValue) {
 
 function updateGlobalCartInterface() {
     const totalCountSum = activeCartList.reduce((acc, obj) => acc + obj.quantity, 0);
-    document.getElementById('cart-count').textContent = totalCountSum;
+    const countBadge = document.getElementById('cart-count');
+    if (countBadge) countBadge.textContent = totalCountSum;
 
     const listContainerNode = document.getElementById('cart-items-list');
     if(!listContainerNode) return;
@@ -113,7 +157,7 @@ function updateGlobalCartInterface() {
         calculationSubtotal += (row.price * row.quantity);
         listContainerNode.innerHTML += `
             <div class="cart-row-item">
-                <img src="${row.img}">
+                <img src="${row.img}" onerror="this.src='https://placehold.co/100x100?text=No+Image'">
                 <div class="cart-item-info">
                     <h4>${row.name}</h4>
                     <p>Ukuran: ${row.size} | Warna: ${row.color}</p>
@@ -173,7 +217,7 @@ function initializeCheckoutCountdownTimer(mins, secs) {
         printMins = printMins < 10 ? "0" + printMins : printMins;
         printSecs = printSecs < 10 ? "0" + printSecs : printSecs;
 
-        UIAnchorDisplayNode.textContent = `${printMins} : ${printSecs}`;
+        if(UIAnchorDisplayNode) UIAnchorDisplayNode.textContent = `${printMins} : ${printSecs}`;
 
         if (--convertedTotalSecondsLeft < 0) {
             clearInterval(window.activeStoreIntervalLoop);
@@ -195,6 +239,7 @@ function simulatePaymentOutcome(isSuccessfulTransaction) {
     }
 }
 
+// Opens the exact tracking page dashboard from your mockups
 function openTrackingDashboard() {
     const listInjectionTargetNode = document.getElementById('tracking-items-container');
     if(!listInjectionTargetNode) return;
@@ -206,7 +251,7 @@ function openTrackingDashboard() {
         piecesCounter += element.quantity;
         listInjectionTargetNode.innerHTML += `
             <div class="cart-row-item" style="border:none; padding:8px 0;">
-                <img src="${element.img}" style="width:50px; height:50px; border-radius:6px;">
+                <img src="${element.img}" style="width:50px; height:50px; border-radius:6px;" onerror="this.src='https://placehold.co/50x50?text=Item'">
                 <div class="cart-item-info">
                     <h4 style="font-size:13px;">${element.name}</h4>
                     <p style="font-size:11px;">Ukuran: ${element.size} | Warna: ${element.color} | Qty: ${element.quantity}</p>
