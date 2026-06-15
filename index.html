@@ -11,7 +11,9 @@
 
     <header>
         <div class="navbar-container">
-            <h1 class="logo" onclick="showSection('home')">WILSTRIFTING<span>THRIFT STORE</span></h1>
+            <h1 class="logo" onclick="showSection('home')">
+                <i class="fas fa-tags logo-icon"></i> WILSTRIFTING<small>THRIFT STORE</small>
+            </h1>
             <nav class="nav-menu" id="navMenu">
                 <a href="#" onclick="showSection('home')">Beranda</a>
                 <a href="#" onclick="showSection('shop')">Shop</a>
@@ -25,7 +27,6 @@
                     <i class="fas fa-shopping-bag"></i>
                     <span id="cart-count">0</span>
                 </div>
-                <i class="fas fa-bars toggle-menu" onclick="toggleMobileMenu()"></i>
             </div>
         </div>
     </header>
@@ -42,45 +43,41 @@
                         <button class="btn-primary" onclick="showSection('shop')">SHOP NOW</button>
                         <button class="btn-secondary" onclick="showSection('shop')">LIHAT KOLEKSI</button>
                     </div>
-                    <div class="hero-badges">
-                        <span><i class="fas fa-check-circle"></i> Kualitas Terbaik</span>
-                        <span><i class="fas fa-tags"></i> Harga Terjangkau</span>
-                        <span><i class="fas fa-leaf"></i> Sustainable Fashion</span>
-                    </div>
                 </div>
             </div>
 
             <div class="categories-container">
-                <div class="category-card" onclick="filterCategory('Celana')"><img src="images/cargo-pants.jpg" alt="Celana"><p>CELANA</p></div>
-                <div class="category-card" onclick="filterCategory('Baju')"><img src="images/nike-tee.jpg" alt="Baju"><p>BAJU</p></div>
-                <div class="category-card" onclick="filterCategory('Kacamata')"><img src="images/kacamata.jpg" alt="Kacamata"><p>KACAMATA</p></div>
-                <div class="category-card" onclick="filterCategory('Sepatu')"><img src="images/converse.jpg" alt="Sepatu"><p>SEPATU</p></div>
-                <div class="category-card" onclick="filterCategory('Jaket')"><img src="images/denim-jacket.jpg" alt="Jaket"><p>JAKET</p></div>
-                <div class="category-card" onclick="filterCategory('Sweater')"><img src="images/sweater.jpg" alt="Sweater"><p>SWEATER</p></div>
+                <div class="category-card" onclick="filterCategory('Celana')">
+                    <div class="cat-icon-frame"><i class="fas fa-scissors"></i></div>
+                    <p>CELANA</p>
+                </div>
+                <div class="category-card" onclick="filterCategory('Baju')">
+                    <div class="cat-icon-frame"><i class="fas fa-shirt"></i></div>
+                    <p>BAJU</p>
+                </div>
+                <div class="category-card" onclick="filterCategory('Kacamata')">
+                    <div class="cat-icon-frame"><i class="fas fa-glasses"></i></div>
+                    <p>KACAMATA</p>
+                </div>
+                <div class="category-card" onclick="filterCategory('Sepatu')">
+                    <div class="cat-icon-frame"><i class="fas fa-shoe-prints"></i></div>
+                    <p>SEPATU</p>
+                </div>
+                <div class="category-card" onclick="filterCategory('Jaket')">
+                    <div class="cat-icon-frame"><i class="fas fa-vest"></i></div>
+                    <p>JAKET</p>
+                </div>
+                <div class="category-card" onclick="filterCategory('Sweater')">
+                    <div class="cat-icon-frame"><i class="fas fa-mitten"></i></div>
+                    <p>SWEATER</p>
+                </div>
             </div>
 
             <div class="section-header">
                 <h2>PRODUK TERBARU</h2>
                 <button class="btn-outline-sm" onclick="showSection('shop')">LIHAT SEMUA <i class="fas fa-chevron-right"></i></button>
             </div>
-
             <div class="products-grid" id="home-products-catalog"></div>
-
-            <div class="promo-banner">
-                <div class="promo-content">
-                    <span class="special-offer">SPECIAL OFFER</span>
-                    <h2>Diskon hingga 30%<br>untuk koleksi pilihan!</h2>
-                    <button class="btn-white" onclick="showSection('shop')">BELANJA SEKARANG</button>
-                </div>
-                <div class="promo-badge">UP TO <span>30%</span><br><small>OFF</small></div>
-            </div>
-
-            <div class="features-bar">
-                <div class="feature-item"><i class="fas fa-truck"></i><div><h4>PENGIRIMAN CEPAT</h4><p>Pengiriman ke seluruh Indonesia</p></div></div>
-                <div class="feature-item"><i class="fas fa-shield-alt"></i><div><h4>AMAN & TERPERCAYA</h4><p>Transaksi aman 100%</p></div></div>
-                <div class="feature-item"><i class="fas fa-headset"></i><div><h4>CUSTOMER SERVICE</h4><p>Layanan CS friendly 24/7</p></div></div>
-                <div class="feature-item"><i class="fas fa-undo"></i><div><h4>GARANSI 7 HARI</h4><p>Garansi retur jika barang tidak sesuai</p></div></div>
-            </div>
         </section>
 
         <section id="shop" class="page-section">
@@ -106,17 +103,69 @@
                 <div class="summary-panel">
                     <h3>RINGKASAN BELANJA</h3>
                     <div class="summary-row"><span>Subtotal (<span id="cart-summary-qty">0</span> item)</span><span id="summary-subtotal">Rp 0</span></div>
-                    <div class="summary-row"><span>Ongkos Kirim</span><span id="summary-ongkir">Rp 15.000</span></div>
                     <hr class="divider">
-                    <div class="summary-row total"><span>Total Belanja</span><span id="summary-total">Rp 0</span></div>
-                    <div class="saving-badge"><i class="fas fa-tag"></i> Kamu hemat Rp 25.000</div>
-                    <button class="btn-checkout" onclick="goToPaymentStep()">CHECKOUT</button>
+                    <button class="btn-checkout" onclick="goToShippingStep()">LENGKAPI ALAMAT</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="shipping-step" class="page-section">
+            <div class="step-wizard">
+                <span class="step"><div class="num">1</div> Keranjang</span>
+                <span class="step active"><div class="num">2</div> Pengiriman</span>
+                <span class="step"><div class="num">3</div> Pembayaran</span>
+                <span class="step"><div class="num">4</div> Konfirmasi</span>
+            </div>
+
+            <div class="cart-layout">
+                <div class="payment-methods-panel">
+                    <h3>PILIH EKSPEDISI PENGIRIMAN</h3>
+                    <p class="subtitle">Estimasi pengiriman terhitung secara real-time berdasarkan alternatif kurir</p>
                     
-                    <div class="trust-indicators">
-                        <div><i class="fas fa-shipping-fast"></i> Pengiriman cepat 1-3 hari sampai</div>
-                        <div><i class="fas fa-shield-alt"></i> Garansi 7 hari Retur mudah</div>
-                        <div><i class="fas fa-check-double"></i> 100% Original Produk pilihan terbaik</div>
+                    <div class="shipping-options-group">
+                        <label id="courier-jne" class="method-option checked" onclick="selectShippingCourier('JNE Express (REG)', 15000, 3)">
+                            <input type="radio" name="shipping_courier" checked>
+                            <div class="method-details">
+                                <i class="fas fa-truck shipping-icon-blue"></i>
+                                <div><strong>JNE Express</strong><p>Layanan Reguler Nusantara — Estimasi 2-3 Hari</p></div>
+                                <div class="brand-logos"><span>Rp 15.000</span></div>
+                            </div>
+                        </label>
+
+                        <label id="courier-jnt" class="method-option" onclick="selectShippingCourier('J&T Express (EZ)', 12000, 2)">
+                            <input type="radio" name="shipping_courier">
+                            <div class="method-details">
+                                <i class="fas fa-truck-fast shipping-icon-red"></i>
+                                <div><strong>J&T Express</strong><p>Layanan Cepat Kilat Ekstra — Estimasi 1-2 Hari</p></div>
+                                <div class="brand-logos"><span>Rp 12.000</span></div>
+                            </div>
+                        </label>
+
+                        <label id="courier-sicepat" class="method-option" onclick="selectShippingCourier('SiCepat Reguler', 14000, 2)">
+                            <input type="radio" name="shipping_courier">
+                            <div class="method-details">
+                                <i class="fas fa-box-open shipping-icon-orange"></i>
+                                <div><strong>SiCepat Reguler</strong><p>Layanan Hemat Untung Kilat — Estimasi 1-2 Hari</p></div>
+                                <div class="brand-logos"><span>Rp 14.000</span></div>
+                            </div>
+                        </label>
+
+                        <label id="courier-pos" class="method-option" onclick="selectShippingCourier('Pos Indonesia (Kilat)', 10000, 5)">
+                            <input type="radio" name="shipping_courier">
+                            <div class="method-details">
+                                <i class="fas fa-mail-bulk shipping-icon-yellow"></i>
+                                <div><strong>Pos Indonesia</strong><p>Pos Reguler Paket Domestik — Estimasi 4-5 Hari</p></div>
+                                <div class="brand-logos"><span>Rp 10.000</span></div>
+                            </div>
+                        </label>
                     </div>
+                </div>
+
+                <div class="summary-panel">
+                    <h3>RINGKASAN EKSPEDISI</h3>
+                    <div class="summary-row"><span>Kurir Pilihan</span><span id="ship-step-courier">JNE Express (REG)</span></div>
+                    <div class="summary-row"><span>Ongkos Kirim</span><span id="ship-step-ongkir">Rp 15.000</span></div>
+                    <button class="btn-checkout" onclick="goToPaymentStep()">LANJUT KE PEMBAYARAN</button>
                 </div>
             </div>
         </section>
@@ -124,80 +173,74 @@
         <section id="payment" class="page-section">
             <div class="step-wizard">
                 <span class="step"><div class="num">1</div> Keranjang</span>
-                <span class="step"><div class="num">2</div> Informasi</span>
-                <span class="step"><div class="num">3</div> Pengiriman</span>
-                <span class="step active"><div class="num">4</div> Pembayaran</span>
-                <span class="step"><div class="num">5</div> Konfirmasi</span>
+                <span class="step"><div class="num">2</div> Pengiriman</span>
+                <span class="step active"><div class="num">3</div> Pembayaran</span>
+                <span class="step"><div class="num">4</div> Konfirmasi</span>
             </div>
             
             <div class="cart-layout">
                 <div class="payment-methods-panel">
                     <h3>METODE PEMBAYARAN</h3>
-                    <p class="subtitle">Pilih metode pembayaran yang kamu inginkan</p>
+                    <p class="subtitle">Silakan pilih metode penyelesaian transaksi retail Anda</p>
                     
                     <div class="payment-group">
-                        <label class="method-option checked" onclick="selectPaymentRadio(this)">
-                            <input type="radio" name="payment_opt" value="Transfer Bank">
+                        <label class="method-option checked" onclick="selectPaymentRadio(this, 'Cash On Delivery (COD)')">
+                            <input type="radio" name="payment_opt" value="COD" checked>
                             <div class="method-details">
-                                <i class="fas fa-university icon-payment"></i>
-                                <div><strong>Transfer Bank</strong><p>Transfer manual ke rekening bank</p></div>
+                                <i class="fas fa-hand-holding-dollar icon-payment cod-color"></i>
+                                <div><strong>Cash On Delivery (COD)</strong><p>Bayar tunai langsung ke kurir ekspedisi saat barang sampai di rumah</p></div>
                             </div>
                         </label>
 
-                        <label class="method-option" onclick="selectPaymentRadio(this)">
-                            <input type="radio" name="payment_opt" value="QRIS" checked>
+                        <label class="method-option" onclick="selectPaymentRadio(this, 'QRIS (Gopay/Dana/OVO)')">
+                            <input type="radio" name="payment_opt" value="QRIS">
                             <div class="method-details">
                                 <i class="fas fa-qrcode icon-payment qris-color"></i>
-                                <div><strong>QRIS</strong><p>Bayar cepat dengan QR Code</p></div>
+                                <div><strong>QRIS Interaktif</strong><p>Scan otomatis kode QR universal via aplikasi e-wallet Anda</p></div>
                             </div>
                         </label>
 
-                        <label class="method-option" onclick="selectPaymentRadio(this)">
-                            <input type="radio" name="payment_opt" value="E-Wallet">
+                        <label class="method-option" onclick="selectPaymentRadio(this, 'Virtual Account Mandiri')">
+                            <input type="radio" name="payment_opt" value="Mandiri VA">
                             <div class="method-details">
-                                <i class="fas fa-wallet icon-payment wallet-color"></i>
-                                <div><strong>E-Wallet</strong><p>Bayar dengan saldo e-wallet</p></div>
-                                <div class="brand-logos"><span>OVO</span><span>DANA</span><span>GoPay</span><span>ShopeePay</span></div>
+                                <i class="fas fa-university icon-payment mandiri-color"></i>
+                                <div><strong>Mandiri Virtual Account</strong><p>Verifikasi instant otomatis tanpa upload struk transfer</p></div>
                             </div>
                         </label>
 
-                        <label class="method-option" onclick="selectPaymentRadio(this)">
-                            <input type="radio" name="payment_opt" value="Virtual Account">
+                        <label class="method-option" onclick="selectPaymentRadio(this, 'Virtual Account BCA')">
+                            <input type="radio" name="payment_opt" value="BCA VA">
                             <div class="method-details">
-                                <i class="fas fa-id-card-alt icon-payment va-color"></i>
-                                <div><strong>Virtual Account</strong><p>Gunakan nomor virtual account</p></div>
-                                <div class="brand-logos"><span>BCA</span><span>Mandiri</span><span>BNI</span><span>BRI</span></div>
+                                <i class="fas fa-university icon-payment bca-color"></i>
+                                <div><strong>BCA Virtual Account</strong><p>Pembayaran instant 24 jam melalui m-BCA / ATM BCA</p></div>
                             </div>
                         </label>
 
-                        <label class="method-option" onclick="selectPaymentRadio(this)">
-                            <input type="radio" name="payment_opt" value="Kartu Kredit / Debit">
+                        <label class="method-option" onclick="selectPaymentRadio(this, 'GoPay Digital')">
+                            <input type="radio" name="payment_opt" value="GoPay">
                             <div class="method-details">
-                                <i class="far fa-credit-card icon-payment cc-color"></i>
-                                <div><strong>Kartu Kredit / Debit</strong><p>Visa, Mastercard, JCB, dan lainnya</p></div>
+                                <i class="fas fa-wallet icon-payment gopay-color"></i>
+                                <div><strong>GoPay E-Wallet</strong><p>Terhubung langsung ke akun Gojek Anda</p></div>
                             </div>
                         </label>
-                    </div>
 
-                    <div class="secure-footer">
-                        <i class="fas fa-lock"></i>
-                        <div>
-                            <strong>Semua transaksi aman & terenkripsi</strong>
-                            <p>Data kamu kami lindungi dengan teknologi keamanan terbaik.</p>
-                        </div>
+                        <label class="method-option" onclick="selectPaymentRadio(this, 'ShopeePay')">
+                            <input type="radio" name="payment_opt" value="ShopeePay">
+                            <div class="method-details">
+                                <i class="fas fa-wallet icon-payment shopee-color"></i>
+                                <div><strong>ShopeePay</strong><p>Pembayaran digital instan via aplikasi Shopee</p></div>
+                            </div>
+                        </label>
                     </div>
                 </div>
 
                 <div class="summary-panel">
-                    <h3>RINGKASAN PEMBAYARAN</h3>
-                    <div class="dropdown-trigger-box">Lihat Detail (<span class="pay-item-count">3</span> Item) <i class="fas fa-chevron-down"></i></div>
-                    <div class="summary-row"><span>Subtotal</span><span id="pay-subtotal">Rp 475.000</span></div>
-                    <div class="summary-row"><span>Ongkos Kirim</span><span>Rp 15.000</span></div>
+                    <h3>RINGKASAN TOTAL</h3>
+                    <div class="summary-row"><span>Subtotal</span><span id="pay-subtotal">Rp 0</span></div>
+                    <div class="summary-row"><span>Ongkos Kirim</span><span id="pay-ongkir">Rp 0</span></div>
                     <hr class="divider">
-                    <div class="summary-row total"><span>Total Pembayaran</span><span id="pay-total" class="primary-color-text">Rp 490.000</span></div>
-                    <button class="btn-checkout" onclick="simulatePaymentOutcome(true)">BAYAR SEKARANG</button>
-                    <div class="timer-box">Selesaikan pembayaran dalam <span id="countdown-timer">23 : 59</span></div>
-                    <button class="btn-text text-danger" onclick="simulatePaymentOutcome(false)" style="margin-top:10px; font-size:11px; opacity:0.6;">Simulasikan Gagal</button>
+                    <div class="summary-row total"><span>Total Pembayaran</span><span id="pay-total">Rp 0</span></div>
+                    <button class="btn-checkout" onclick="simulatePaymentOutcome(true)">PROSES PESANAN</button>
                 </div>
             </div>
         </section>
@@ -205,189 +248,56 @@
         <section id="payment-success" class="page-section">
             <div class="status-card-box text-center">
                 <div class="circle-icon success-bg"><i class="fas fa-check"></i></div>
-                <h2>PEMBAYARAN BERHASIL!</h2>
-                <p class="status-sub">Terima kasih, pesananmu telah berhasil dibuat.</p>
-                
+                <h2>PESANAN BERHASIL DIGALANG!</h2>
+                <p class="status-sub">Terima kasih, pesanan thrift item kamu sedang kami persiapkan.</p>
                 <table class="receipt-table">
-                    <tr><td>No. Pesanan</td><td class="text-right" id="success-order-id">WIL-240525-00123</td></tr>
-                    <tr><td>Tanggal</td><td class="text-right">25 Mei 2024, 15:30 WIB</td></tr>
-                    <tr><td>Metode Pembayaran</td><td class="text-right" id="success-method">QRIS</td></tr>
-                    <tr class="highlight-row"><td>Total Pembayaran</td><td class="text-right success-text" id="success-total">Rp 490.000</td></tr>
+                    <tr><td>No. Invoice</td><td class="text-right">INV-WILSTRIFT-9921</td></tr>
+                    <tr><td>Metode Pembayaran</td><td class="text-right" id="success-method">Cash On Delivery (COD)</td></tr>
+                    <tr class="highlight-row"><td>Total Tagihan</td><td class="text-right success-text" id="success-total">Rp 0</td></tr>
                 </table>
-
-                <div class="email-alert-footer">
-                    <i class="far fa-envelope"></i> Detail pesanan telah dikirim ke email kamu <br><strong>rizky.pratama@gmail.com</strong>
-                </div>
-
-                <div class="status-action-btns">
-                    <button class="btn-primary-block" onclick="openTrackingDashboard()">Lihat Pesanan Saya</button>
-                    <button class="btn-outline-block" onclick="showSection('home')">Kembali ke Beranda</button>
-                </div>
-            </div>
-        </section>
-
-        <section id="payment-failed" class="page-section">
-            <div class="status-card-box text-center alert-failed-container">
-                <div class="circle-icon failed-bg"><i class="fas fa-times"></i></div>
-                <h2>PEMBAYARAN GAGAL!</h2>
-                <p class="status-sub">Transaksi tidak dapat diproses. Silakan coba lagi.</p>
-                
-                <table class="receipt-table">
-                    <tr><td>No. Pesanan</td><td class="text-right">WIL-240525-00124</td></tr>
-                    <tr><td>Waktu</td><td class="text-right">25 Mei 2024, 15:35 WIB</td></tr>
-                    <tr><td>Metode Pembayaran</td><td class="text-right">QRIS</td></tr>
-                    <tr><td>Status</td><td class="text-right"><span class="badge-failed-pill">Gagal</span></td></tr>
-                </table>
-
-                <p class="troubleshoot-text">Pastikan saldo cukup atau periksa koneksi internet kamu.</p>
-
-                <div class="status-action-btns">
-                    <button class="btn-danger-block" onclick="showSection('payment')"><i class="fas fa-redo"></i> Coba Lagi</button>
-                    <button class="btn-outline-block" onclick="showSection('cart')">Kembali ke Keranjang</button>
-                </div>
+                <button class="btn-primary-block" onclick="openTrackingDashboard()">Lacak Pengiriman Real-Time</button>
             </div>
         </section>
 
         <section id="tracking-panel" class="page-section">
             <div class="tracking-title-bar">
-                <div>
-                    <h2>INFO PEMBELIAN</h2>
-                    <span class="order-id-label"><i class="far fa-clock"></i> No. Pesanan: <strong id="tracking-order-id">WIL-240525-00123</strong> <mark class="badge-process">Diproses</mark></span>
-                </div>
-                <button class="btn-secondary-print" onclick="window.print()"><i class="fas fa-print"></i> Cetak Invoice</button>
+                <h2>INFO TRACKING RESI</h2>
+                <span class="badge-process">Dalam Pengiriman</span>
             </div>
 
             <div class="tracking-grid">
                 <div class="tracking-left">
                     <div class="card-layout-flat">
-                        <h3>DETAIL PESANAN</h3>
+                        <h3>DAFTAR BELANJAAN</h3>
                         <div id="tracking-items-container"></div>
+                        <hr class="light-divider">
                         <div class="pricing-calc">
-                            <div><span>Subtotal (<span id="track-qty-lbl">3</span> item)</span><span id="track-subtotal">Rp 475.000</span></div>
-                            <div><span>Ongkos Kirim</span><span>Rp 15.000</span></div>
-                            <div class="discount-row"><span>Diskon</span><span>- Rp 10.000</span></div>
-                            <hr class="light-divider">
-                            <div class="grand-total"><span>TOTAL PEMBAYARAN</span><span id="track-total">Rp 480.000</span></div>
+                            <div><span>Total Tagihan Akhir</span><span id="track-total" style="font-weight: bold; color: #556b2f;">Rp 0</span></div>
                         </div>
                     </div>
-
-                    <div class="card-layout-flat vendor-shipping-card">
-                        <h3><i class="fas fa-truck"></i> JASA PENGIRIMAN</h3>
-                        <div class="vendor-flex">
-                            <div class="vendor-logo-box"><strong>JNE</strong><br><small>EXPRESS</small></div>
-                            <div class="vendor-meta">
-                                <p><span>Jasa Pengiriman</span><strong>JNE Regular</strong></p>
-                                <p><span>Layanan</span><strong>REG (Reguler)</strong></p>
-                                <p><span>Berat Paket</span><strong>1.2 kg</strong></p>
-                                <p><span>Ongkos Kirim</span><strong>Rp 15.000</strong></p>
-                                <p><span>No. Resi</span><strong>012345678910</strong></p>
-                            </div>
-                        </div>
-                        <button class="btn-track-vendor">Lacak Pengiriman <i class="fas fa-external-link-alt"></i></button>
+                    <div class="card-layout-flat">
+                        <h3><i class="fas fa-truck"></i> MANIFEST LOGISTIK</h3>
+                        <p>Ekspedisi Pilihan: <strong id="track-courier-name">JNE Express (REG)</strong></p>
+                        <p>No. Resi Otomatis: <strong>WLS-TRFT-992384110X</strong></p>
                     </div>
                 </div>
 
                 <div class="tracking-right">
-                    <div class="card-layout-flat">
-                        <h3><i class="fas fa-map-marker-alt"></i> ALAMAT PEMBELI</h3>
-                        <div class="address-sheet">
-                            <p><span>Nama Lengkap</span><strong>Rizky Pratama</strong></p>
-                            <p><span>No. WhatsApp</span><strong>0812-3456-7890</strong></p>
-                            <p><span>Alamat Lengkap</span><strong>Jl. Merdeka No. 123, Kel. Sukamaju, Kec. Cicendo, Kota Bandung, Jawa Barat 40173</strong></p>
-                            <p class="buyer-note"><span>Catatan untuk Penjual</span><br>Tolong dikemas dengan rapi ya kak, terima kasih!</p>
-                        </div>
-                    </div>
-
                     <div class="card-layout-flat alert-eta-box">
-                        <h3><i class="far fa-calendar-alt"></i> ESTIMASI SAMPAI</h3>
+                        <h3><i class="far fa-calendar-alt"></i> ESTIMASI WAKTU NYATA (REAL-TIME)</h3>
                         <div class="eta-flex">
-                            <div class="eta-icon-circle"><i class="fas fa-shipping-fast"></i></div>
+                            <div class="eta-icon-circle"><i class="fas fa-hourglass-half"></i></div>
                             <div>
-                                <h4>29 - 31 Mei 2024</h4>
-                                <p>Estimasi dihitung dari tanggal pesanan diproses oleh toko dan diserahkan ke pihak ekspedisi.</p>
+                                <h4 id="track-eta-days">2 - 3 Hari Pengiriman</h4>
+                                <p id="track-eta-desc">Paket Anda dijadwalkan serah terima ke pihak logistik malam ini.</p>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="card-layout-flat">
-                        <h3>STATUS PESANAN</h3>
-                        <div class="timeline">
-                            <div class="time-step complete">
-                                <div class="icon-node"><i class="fas fa-file-invoice"></i></div>
-                                <div><strong>Pesanan Diterima</strong><p>25 Mei 2024, 15:30 WIB</p></div>
-                            </div>
-                            <div class="time-step complete">
-                                <div class="icon-node"><i class="fas fa-box"></i></div>
-                                <div><strong>Diproses</strong><p>25 Mei 2024, 16:00 WIB</p></div>
-                            </div>
-                            <div class="time-step">
-                                <div class="icon-node"><i class="fas fa-truck"></i></div>
-                                <div><strong>Dikirim</strong><p>26 Mei 2024, 10:15 WIB</p></div>
-                            </div>
-                            <div class="time-step">
-                                <div class="icon-node"><i class="fas fa-home"></i></div>
-                                <div><strong>Sampai</strong><p>Est. 29 - 31 Mei 2024</p></div>
-                            </div>
-                        </div>
-                        <div class="system-banner-status">
-                            <i class="fas fa-info-circle"></i> Pesananmu sedang diproses oleh penjual. Mohon menunggu ya!
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <section id="about" class="page-section">
-            <h2>TENTANG WILSTRIFTING</h2>
-            <div class="card-layout-flat">
-                <p>Wilstrifting adalah toko thrift pilihan terpercaya untuk koleksi pakaian vintage premium, keren, terjangkau, dan ramah lingkungan.</p>
-            </div>
-        </section>
-
-        <section id="contact" class="page-section">
-            <h2>HUBUNGI KAMI</h2>
-            <div class="card-layout-flat">
-                <p>Ada kendala atau pertanyaan? Hubungi admin support kami:</p>
-                <p><strong>WhatsApp:</strong> 0812-3456-7890</p>
             </div>
         </section>
 
     </main>
-
-    <footer>
-        <div class="footer-grid">
-            <div>
-                <h3>WILSTRIFTING</h3>
-                <p>Wilstrifting adalah toko thrift pilihan terpercaya untuk koleksi pakaian vintage premium, keren, terjangkau, dan ramah lingkungan.</p>
-            </div>
-            <div>
-                <h3>MENU</h3>
-                <a href="#" onclick="showSection('home')">Beranda</a>
-                <a href="#" onclick="showSection('shop')">Shop</a>
-                <a href="#" onclick="showSection('about')">Tentang Kami</a>
-                <a href="#" onclick="showSection('contact')">Kontak</a>
-            </div>
-            <div>
-                <h3>KATEGORI</h3>
-                <a href="#" onclick="filterCategory('Celana')">Celana</a>
-                <a href="#" onclick="filterCategory('Baju')">Baju</a>
-                <a href="#" onclick="filterCategory('Kacamata')">Kacamata</a>
-                <a href="#" onclick="filterCategory('Sepatu')">Sepatu</a>
-                <a href="#" onclick="filterCategory('Jaket')">Jaket</a>
-                <a href="#" onclick="filterCategory('Sweater')">Sweater</a>
-            </div>
-            <div>
-                <h3>FOLLOW US</h3>
-                <div class="social-row">
-                    <i class="fab fa-instagram"></i>
-                    <i class="fab fa-tiktok"></i>
-                    <i class="fas fa-shopping-bag"></i>
-                    <i class="fab fa-whatsapp"></i>
-                </div>
-            </div>
-        </div>
-        <p class="copyright">&copy; 2026 Wilstrifting. All Rights Reserved.</p>
-    </footer>
 
     <script src="script.js"></script>
 </body>
