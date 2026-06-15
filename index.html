@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wilstrifting Thrift Store</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="navbar-container">
+            <h1 class="logo" onclick="showSection('home')">WILSTRIFTING<span>THRIFT STORE</span></h1>
+            <nav class="nav-menu" id="navMenu">
+                <a href="#" onclick="showSection('home')">Beranda</a>
+                <a href="#" onclick="showSection('shop')">Shop</a>
+                <a href="#" onclick="showSection('about')">Tentang Kami</a>
+                <a href="#" onclick="showSection('contact')">Kontak</a>
+            </nav>
+            <div class="nav-icons">
+                <i class="fas fa-search"></i>
+                <i class="fas fa-user"></i>
+                <div class="cart-icon-wrapper" onclick="showSection('cart')">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span id="cart-count">0</span>
+                </div>
+                <i class="fas fa-bars toggle-menu" onclick="toggleMobileMenu()"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section id="home" class="page-section active">
+            <div class="hero-banner">
+                <div class="hero-text">
+                    <span class="tag">THRIFT STORE</span>
+                    <h2>WILSTRIFTING</h2>
+                    <p>Gaya Keren, Harga Bersahabat<br>Temukan Outfit Vintage Favoritmu!</p>
+                    <div class="hero-btns">
+                        <button class="btn-primary" onclick="showSection('shop')">SHOP NOW</button>
+                        <button class="btn-secondary" onclick="showSection('shop')">LIHAT KOLEKSI</button>
+                    </div>
+                    <div class="hero-badges">
+                        <span><i class="fas fa-check-circle"></i> Kualitas Terbaik</span>
+                        <span><i class="fas fa-tag"></i> Harga Terjangkau</span>
+                        <span><i class="fas fa-leaf"></i> Sustainable Fashion</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="categories-container">
+                <div class="category-card" onclick="filterCategory('Celana')"><i class="fas fa-walking"></i><p>CELANA</p></div>
+                <div class="category-card" onclick="filterCategory('Baju')"><i class="fas fa-tshirt"></i><p>BAJU</p></div>
+                <div class="category-card" onclick="filterCategory('Kacamata')"><i class="fas fa-glasses"></i><p>KACAMATA</p></div>
+                <div class="category-card" onclick="filterCategory('Sepatu')"><i class="fas fa-shoe-prints"></i><p>SEPATU</p></div>
+                <div class="category-card" onclick="filterCategory('Jaket')"><i class="fas fa-vest"></i><p>JAKET</p></div>
+                <div class="category-card" onclick="filterCategory('Sweater')"><i class="fas fa-ribbon"></i><p>SWEATER</p></div>
+            </div>
+
+            <div class="promo-banner">
+                <div class="promo-content">
+                    <span class="special-offer">SPECIAL OFFER</span>
+                    <h2>Diskon hingga 30%<br>untuk koleksi pilihan!</h2>
+                    <button class="btn-white" onclick="showSection('shop')">BELANJA SEKARANG</button>
+                </div>
+                <div class="promo-badge">UP TO <span>30%</span> OFF</div>
+            </div>
+        </section>
+
+        <section id="shop" class="page-section">
+            <div class="section-header">
+                <h2>PRODUK TERBARU</h2>
+                <div class="catalog-filters">
+                    <button class="filter-btn active" onclick="filterCategory('All')">Semua</button>
+                    <button class="filter-btn" onclick="filterCategory('Jaket')">Jaket</button>
+                    <button class="filter-btn" onclick="filterCategory('Sepatu')">Sepatu</button>
+                    <button class="filter-btn" onclick="filterCategory('Sweater')">Sweater</button>
+                </div>
+            </div>
+            <div class="products-grid" id="products-catalog-container">
+                </div>
+        </section>
+
+        <section id="cart" class="page-section">
+            <h2>KERANJANG BELANJA</h2>
+            <div class="cart-layout">
+                <div class="cart-items-panel" id="cart-items-list">
+                    </div>
+                <div class="summary-panel">
+                    <h3>RINGKASAN BELANJA</h3>
+                    <div class="summary-row"><span>Subtotal</span><span id="summary-subtotal">Rp 0</span></div>
+                    <div class="summary-row"><span>Ongkos Kirim</span><span id="summary-ongkir">Rp 15.000</span></div>
+                    <hr>
+                    <div class="summary-row total"><span>Total Belanja</span><span id="summary-total">Rp 0</span></div>
+                    <button class="btn-checkout" onclick="goToPaymentStep()">CHECKOUT</button>
+                    <button class="btn-text" onclick="showSection('shop')"><i class="fas fa-arrow-left"></i> Lanjut Belanja</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="payment" class="page-section">
+            <div class="step-wizard">
+                <span class="step">1 Keranjang</span>
+                <span class="step">2 Informasi</span>
+                <span class="step">3 Pengiriman</span>
+                <span class="step active">4 Pembayaran</span>
+                <span class="step">5 Konfirmasi</span>
+            </div>
+            <div class="cart-layout">
+                <div class="payment-methods-panel">
+                    <h3>METODE PEMBAYARAN</h3>
+                    <p class="subtitle">Pilih metode pembayaran yang kamu inginkan</p>
+                    
+                    <label class="method-option">
+                        <input type="radio" name="payment_opt" value="TF">
+                        <div class="method-details"><i class="fas fa-university"></i> <div><strong>Transfer Bank</strong><p>Transfer manual ke rekening bank</p></div></div>
+                    </label>
+                    <label class="method-option checked">
+                        <input type="radio" name="payment_opt" value="QRIS" checked>
+                        <div class="method-details"><i class="fas fa-qrcode"></i> <div><strong>QRIS</strong><p>Bayar cepat dengan QR Code</p></div></div>
+                    </label>
+                    <label class="method-option">
+                        <input type="radio" name="payment_opt" value="EWALLET">
+                        <div class="method-details"><i class="fas fa-wallet"></i> <div><strong>E-Wallet</strong><p>OVO, DANA, GoPay, ShopeePay</p></div></div>
+                    </label>
+                </div>
+                <div class="summary-panel">
+                    <h3>RINGKASAN PEMBAYARAN</h3>
+                    <div class="summary-row"><span>Subtotal</span><span id="pay-subtotal">Rp 475.000</span></div>
+                    <div class="summary-row"><span>Ongkos Kirim</span><span>Rp 15.000</span></div>
+                    <hr>
+                    <div class="summary-row total"><span>Total Pembayaran</span><span id="pay-total">Rp 490.000</span></div>
+                    <div class="timer-box">Selesaikan pembayaran dalam <strong id="countdown-timer">23:59</strong></div>
+                    <button class="btn-checkout" onclick="simulatePaymentOutcome(true)">BAYAR SEKARANG (SUKSES)</button>
+                    <button class="btn-danger" onclick="simulatePaymentOutcome(false)">Simulasi Gagal</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="payment-success" class="page-section status-page">
+            <div class="status-card success">
+                <div class="status-icon"><i class="fas fa-check-circle"></i></div>
+                <h2>PEMBAYARAN BERHASIL!</h2>
+                <p>Terima kasih, pesananmu telah berhasil dibuat.</p>
+                <div class="invoice-box">
+                    <p><strong>No. Pesanan:</strong> <span id="success-order-id">WIL-240525-00123</span></p>
+                    <p><strong>Tanggal:</strong> 25 Mei 2024, 15:30 WIB</p>
+                    <p><strong>Metode Pembayaran:</strong> QRIS</p>
+                    <p class="total-pay"><strong>Total Pembayaran:</strong> <span id="success-total">Rp 490.000</span></p>
+                </div>
+                <p class="email-notify"><i class="fas fa-envelope"></i> Detail pesanan telah dikirim ke email kamu: <strong>rizky.pratama@gmail.com</strong></p>
+                <div class="status-actions">
+                    <button class="btn-checkout" onclick="openTrackingDashboard()">Lihat Pesanan Saya</button>
+                    <button class="btn-secondary" onclick="showSection('home')">Kembali ke Beranda</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="payment-failed" class="page-section status-page">
+            <div class="status-card failed">
+                <div class="status-icon"><i class="fas fa-times-circle"></i></div>
+                <h2>PEMBAYARAN GAGAL!</h2>
+                <p>Transaksi tidak dapat diproses. Silakan coba lagi.</p>
+                <div class="invoice-box">
+                    <p><strong>No. Pesanan:</strong> WIL-240525-00124</p>
+                    <p><strong>Waktu:</strong> 25 Mei 2024, 15:35 WIB</p>
+                    <p><strong>Metode Pembayaran:</strong> QRIS</p>
+                    <p class="status-tag failed">Gagal</p>
+                </div>
+                <p class="email-notify">Pastikan saldo cukup atau periksa koneksi internet kamu.</p>
+                <div class="status-actions">
+                    <button class="btn-checkout" onclick="showSection('payment')">Coba Lagi</button>
+                    <button class="btn-secondary" onclick="showSection('cart')">Kembali ke Keranjang</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="tracking-panel" class="page-section">
+            <div class="tracking-title-bar">
+                <div>
+                    <h2>INFO PEMBELIAN</h2>
+                    <span class="order-id-label">No. Pesanan: WIL-240525-00123 <mark class="badge-process">Diproses</mark></span>
+                </div>
+                <button class="btn-secondary" onclick="window.print()"><i class="fas fa-print"></i> Cetak Invoice</button>
+            </div>
+
+            <div class="tracking-grid">
+                <div class="tracking-left">
+                    <div class="card shadow-sm">
+                        <h3>DETAIL PESANAN</h3>
+                        <div id="tracking-items-container"></div>
+                        <div class="pricing-calc">
+                            <div><span>Subtotal (3 item)</span><span>Rp 475.000</span></div>
+                            <div><span>Ongkos Kirim</span><span>Rp 15.000</span></div>
+                            <div class="discount"><span>Diskon</span><span>- Rp 10.000</span></div>
+                            <hr>
+                            <div class="grand-total"><span>TOTAL PEMBAYARAN</span><span>Rp 480.000</span></div>
+                        </div>
+                    </div>
+
+                    <div class="card shadow-sm order-shipping-vendor">
+                        <h3><i class="fas fa-truck"></i> JASA PENGIRIMAN</h3>
+                        <div class="vendor-details-flex">
+                            <div class="vendor-logo-box"><strong>JNE</strong><span>EXPRESS</span></div>
+                            <div class="vendor-meta">
+                                <p><strong>Jasa Pengiriman:</strong> JNE Regular</p>
+                                <p><strong>Layanan:</strong> REG (Reguler)</p>
+                                <p><strong>Berat Paket:</strong> 1.2 kg</p>
+                                <p><strong>Ongkos Kirim:</strong> Rp 15.000</p>
+                                <p><strong>No. Resi:</strong> 012345678910</p>
+                            </div>
+                        </div>
+                        <button class="btn-track-vendor" onclick="alert('Menghubungkan ke API JNE...')">Lacak Pengiriman <i class="fas fa-external-link-alt"></i></button>
+                    </div>
+                </div>
+
+                <div class="tracking-right">
+                    <div class="card shadow-sm">
+                        <h3><i class="fas fa-map-marker-alt"></i> ALAMAT PEMBELI</h3>
+                        <div class="address-sheet">
+                            <p><strong>Nama Lengkap:</strong> Rizky Pratama</p>
+                            <p><strong>No. WhatsApp:</strong> 0812-3456-7890</p>
+                            <p><strong>Alamat Lengkap:</strong> Jl. Merdeka No. 123, Kel. Sukamaju, Kec. Cicendo, Kota Bandung, Jawa Barat 40173</p>
+                            <p class="note"><strong>Catatan untuk Penjual:</strong> Tolong dikemas dengan rapi ya kak, terima kasih!</p>
+                        </div>
+                    </div>
+
+                    <div class="card shadow-sm alert-eta">
+                        <h3>ESTIMASI SAMPAI</h3>
+                        <div class="eta-flex">
+                            <i class="fas fa-shipping-fast eta-icon"></i>
+                            <div>
+                                <h4>29 - 31 Mei 2024</h4>
+                                <p>Estimasi dihitung dari tanggal pesanan diproses oleh toko dan diserahkan ke pihak ekspedisi.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card shadow-sm status-timeline-card">
+                        <h3>STATUS PESANAN</h3>
+                        <div class="timeline">
+                            <div class="time-step complete">
+                                <div class="icon-node"><i class="fas fa-file-invoice"></i></div>
+                                <div><strong>Pesanan Diterima</strong><p>25 Mei 2024, 15:30 WIB</p></div>
+                            </div>
+                            <div class="time-step complete">
+                                <div class="icon-node"><i class="fas fa-box"></i></div>
+                                <div><strong>Diproses</strong><p>25 Mei 2024, 16:00 WIB</p></div>
+                            </div>
+                            <div class="time-step">
+                                <div class="icon-node"><i class="fas fa-truck-moving"></i></div>
+                                <div><strong>Dikirim</strong><p>26 Mei 2024, 10:15 WIB</p></div>
+                            </div>
+                            <div class="time-step">
+                                <div class="icon-node"><i class="fas fa-home"></i></div>
+                                <div><strong>Sampai</strong><p>Est. 29 - 31 Mei 2024</p></div>
+                            </div>
+                        </div>
+                        <div class="system-status-info">
+                            <i class="fas fa-info-circle"></i> Pesananmu sedang diproses oleh penjual. Mohon menunggu ya!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="page-section">
+            <h2>Tentang Wilstrifting</h2>
+            <div class="card">
+                <p><strong>Wilstrifting</strong> adalah toko thrift pilihan untuk kamu yang ingin selalu tampil keren dengan gaya fashion vintage terbaik tanpa menguras kantong. Kami menyediakan berbagai macam kurasi pakaian vintage mulai dari jaket denim, sweater rajut, celana cargo, hingga sepatu sneakers klasik dengan kualitas yang terjamin bersih, higienis, dan 100% original.</p>
+            </div>
+        </section>
+
+        <section id="contact" class="page-section">
+            <h2>Hubungi Kami</h2>
+            <div class="card">
+                <p>Punya pertanyaan seputar detail ukuran pakaian atau status pengiriman pesananmu? Silakan hubungi customer service kami:</p>
+                <p><i class="fab fa-whatsapp"></i> <strong>WhatsApp:</strong> +62 812-3456-7890</p>
+                <p><i class="fas fa-envelope"></i> <strong>Email:</strong> support@wilstrifting.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> <strong>Store Offline:</strong> Jl. Merdeka No. 123, Bandung, Jawa Barat</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <h3>WILSTRIFTING</h3>
+                <p>Wilstrifting adalah toko thrift pilihan untuk kamu yang ingin tampil gaya dengan cara yang lebih hemat dan ramah lingkungan.</p>
+            </div>
+            <div>
+                <h3>MENU</h3>
+                <a href="#" onclick="showSection('home')">Beranda</a>
+                <a href="#" onclick="showSection('shop')">Shop</a>
+                <a href="#" onclick="showSection('about')">Tentang Kami</a>
+                <a href="#" onclick="showSection('contact')">Kontak</a>
+            </div>
+            <div>
+                <h3>KATEGORI</h3>
+                <a href="#" onclick="filterCategory('Celana')">Celana</a>
+                <a href="#" onclick="filterCategory('Baju')">Baju</a>
+                <a href="#" onclick="filterCategory('Sepatu')">Sepatu</a>
+                <a href="#" onclick="filterCategory('Jaket')">Jaket</a>
+                <a href="#" onclick="filterCategory('Sweater')">Sweater</a>
+            </div>
+            <div>
+                <h3>FOLLOW US</h3>
+                <div class="social-row">
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-tiktok"></i>
+                    <i class="fas fa-shopping-bag"></i>
+                    <i class="fab fa-whatsapp"></i>
+                </div>
+            </div>
+        </div>
+        <p class="copyright">&copy; 2026 Wilstrifting. All Rights Reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
